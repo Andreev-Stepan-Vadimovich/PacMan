@@ -3,10 +3,8 @@
 #include <string>
 #include <algorithm>
 #include <cmath>
-#include "classes.cpp"
 #include <fstream>
 #include "glut.h"
-#include "functions.cpp"
 
 struct Pac_Man {
 	std::pair<double, double> position = { 14., 7.5 };
@@ -60,44 +58,81 @@ Orange_Ghost OrangeGhost;
 
 void ReNew_PacMan_Position() {
 	if (PacMan.direction == "Right") {
-		/*if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) && (PacMan.position.first == double(PacMan.position_in_array.first) + 0.5)) return;
-		else if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) && (PacMan.position.first != double(PacMan.position_in_array.first) + 0.5)) {
-			PacMan.position.first += 0.01;
+		if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) && (int(PacMan.position.first * 10. - (double)PacMan.position_in_array.first * 10) == 5))
+			return;
+		else if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) && (int(PacMan.position.first * 10. - (double)PacMan.position_in_array.first * 10) == 5)) {
+			PacMan.position.first += 0.1;
 			return;
 		}
 		else {
-			PacMan.position.first += 0.01;
-			if (int(PacMan.position.first * 100) % 100 == 0) PacMan.position_in_array.first += 1;
-		}*/
-		if (Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) return;
+			PacMan.position.first += 0.1;
+			//std::cout << Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] << "\n\n";
+			if (int(PacMan.position.first * 10) % 10 == 5) PacMan.position_in_array.first += 1;
+		}
+
+		/*if (Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) return;
 		else {
 			PacMan.position.first += 1;
 			PacMan.position_in_array.first += 1;
-		}
+		}*/
 		std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 	else if (PacMan.direction == "Left") {
-		if (Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1) return;
+		if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1) && (int(PacMan.position.first * 10. - (double)PacMan.position_in_array.first * 10) == 5))
+			return;
+		else if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1) && (int(PacMan.position.first * 10. - (double)PacMan.position_in_array.first * 10) == 5)) {
+			PacMan.position.first -= 0.1;
+			return;
+		}
+		else {
+			PacMan.position.first -= 0.1;
+			//std::cout << Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] << "\n\n";
+			if (int(PacMan.position.first * 10) % 10 == 5) PacMan.position_in_array.first -= 1;
+		}
+
+		/*if (Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1) return;
 		else {
 			PacMan.position.first -= 1;
 			PacMan.position_in_array.first -= 1;
-		}
+		}*/
 		std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 	else if (PacMan.direction == "Up") {
-		if (Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] == 1) return;
+		if ((Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 10. - (double)PacMan.position_in_array.second * 10) == 5))
+			return;
+		else if ((Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 10. - (double)PacMan.position_in_array.second * 10) == 5)) {
+			PacMan.position.second += 0.1;
+			return;
+		}
+		else {
+			PacMan.position.second += 0.1;
+			//std::cout << Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] << "\n\n";
+			if (int(PacMan.position.second * 10) % 10 == 5) PacMan.position_in_array.second += 1;
+		}
+		/*if (Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] == 1) return;
 		else {
 			PacMan.position.second += 1;
 			PacMan.position_in_array.second += 1;
-		}
+		}*/
 		std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 	else if (PacMan.direction == "Down") {
-		if (Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] == 1) return;
+		if ((Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 10. - (double)PacMan.position_in_array.second * 10) == 5))
+			return;
+		else if ((Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 10. - (double)PacMan.position_in_array.second * 10) == 5)) {
+			PacMan.position.second -= 0.1;
+			return;
+		}
+		else {
+			PacMan.position.second -= 0.1;
+			//std::cout << Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] << "\n\n";
+			if (int(PacMan.position.second * 10) % 10 == 5) PacMan.position_in_array.second -= 1;
+		}
+		/*if (Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] == 1) return;
 		else {
 			PacMan.position.second -= 1;
 			PacMan.position_in_array.second -= 1;
-		}
+		}*/
 		std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 }
@@ -618,6 +653,7 @@ void Draw_PacMan() {
 
 	if (Map[PacMan.position_in_array.second][PacMan.position_in_array.first] == 2) {
 		Map[PacMan.position_in_array.second][PacMan.position_in_array.first] = 0;
+		Count_of_Points += 10;
 	}
 
 	double ForDraw;
@@ -875,12 +911,12 @@ void Display(void) {
 	glOrtho(0.f, 28.f, 0.f, 32.f, 0.f, 1.f);
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	 
+
 	Draw_Whalls();
 	Draw_PacMan();
 	Draw_Cooks();
 	Draw_Enerjazer();
-	
+
 	//Отрисовка Красного
 	//Отрисовка Голубого
 	//Отрисовка Розового
@@ -929,7 +965,7 @@ int main(int argc, char** argv) {
 
 	glutDisplayFunc(Display);
 	glutKeyboardFunc(Keyboard);
-	
+
 
 	// Основной цикл GLUT
 	glutMainLoop();
