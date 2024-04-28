@@ -10,31 +10,40 @@ struct Pac_Man {
 	std::pair<double, double> position = { 14., 7.5 };
 	std::pair<int, int> position_in_array = { 14, 7. };
 	std::string direction;
+	double Sensetive = 8.;
 	double speed = 0.1;
 };
 
 struct Red_Ghost {
 	std::pair<double, double> position = { 14., 19.5 };
-	std::string direction;
-	double speed = 0.0001;
+	std::pair<int, int> position_in_array = { 14, 19. };
+	std::string direction = "Left";
+	double Sensetive = 8.;
+	double speed = 0.1;
 };
 
 struct Blue_Ghost {
-	std::pair<double, double> position = { 12., 16.5 };
-	std::string direction;
-	double speed = 0.0001;
+	std::pair<double, double> position = { 12.5, 16.5 };
+	std::pair<int, int> position_in_array = { 12, 16. };
+	std::string direction = "Right";
+	double Sensetive = 8.;
+	double speed = 0.1;
 };
 
 struct Pink_Ghost {
-	std::pair<double, double> position = { 14., 16.5 };
-	std::string direction;
-	double speed = 0.0001;
+	std::pair<double, double> position = { 14.5, 16.5 };
+	std::pair<int, int> position_in_array = { 14, 16. };
+	std::string direction = "Up";
+	double Sensetive = 8.;
+	double speed = 0.1;
 };
 
 struct Orange_Ghost {
-	std::pair<double, double> position = { 16., 16.5 };
-	std::string direction;
-	double speed = 0.0001;
+	std::pair<double, double> position = { 16.5, 16.5 };
+	std::pair<int, int> position_in_array = { 16, 16. };
+	std::string direction = "Left";
+	double Sensetive = 8.;
+	double speed = 0.1;
 };
 
 //Global variables
@@ -157,6 +166,81 @@ void ReNew_PacMan_Position() {
 	}
 }
 
+template<typename T>
+void ReNew_Ghost_Direction(T &Ghost) {
+	std::vector<std::string> Possible_Ways;
+	if (Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] != 1 && Ghost.direction != "Right") Possible_Ways.push_back("Right");
+	if (Map[Ghost.position_in_array.second][Ghost.position_in_array.first - 1] != 1 && Ghost.direction != "Left") Possible_Ways.push_back("Left");
+	if (Map[Ghost.position_in_array.second + 1][Ghost.position_in_array.first] != 1 && Ghost.direction != "Up") Possible_Ways.push_back("Up");
+	if (Map[Ghost.position_in_array.second - 1][Ghost.position_in_array.first] != 1 && Ghost.direction != "Down") Possible_Ways.push_back("Down");
+
+	Ghost.direction = Possible_Ways[rand() % Possible_Ways.size()];
+	return;
+}
+
+template<typename T>
+void ReNew_Ghost_Position(T &Ghost) {
+	if (Ghost.direction == "Right") {
+			if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] == 1) && (int(Ghost.position.first * 10. - (double)Ghost.position_in_array.first * 10) == 5)) {
+				ReNew_Ghost_Direction(Ghost);
+				return;
+			}
+			else if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] == 1) && (int(Ghost.position.first * 10. - (double)Ghost.position_in_array.first * 10) == 5)) {
+				Ghost.position.first += 0.1;
+					return;
+			}
+			else {
+				Ghost.position.first += 0.1;
+				if (int(Ghost.position.first * 10) % 10 == 5) Ghost.position_in_array.first += 1;
+			}
+		}
+	else if (Ghost.direction == "Left") {
+			if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first - 1] == 1) && (int(Ghost.position.first * 10. - (double)Ghost.position_in_array.first * 10) == 5)) {
+				ReNew_Ghost_Direction(Ghost);
+				return;
+			}
+			else if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first - 1] == 1) && (int(Ghost.position.first * 10. - (double)Ghost.position_in_array.first * 10) == 5)) {
+				Ghost.position.first -= 0.1;
+				return;
+			}
+			else {
+				Ghost.position.first -= 0.1;
+				if (int(Ghost.position.first * 10) % 10 == 5) Ghost.position_in_array.first -= 1;
+			}
+		}
+	else if (Ghost.direction == "Up") {
+			if ((Map[Ghost.position_in_array.second + 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 10. - (double)Ghost.position_in_array.second * 10) == 5)) {
+				ReNew_Ghost_Direction(Ghost);
+				return;
+			}
+			else if ((Map[Ghost.position_in_array.second + 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 10. - (double)Ghost.position_in_array.second * 10) == 5)) {
+				Ghost.position.second += 0.1;
+				return;
+			}
+			else {
+				Ghost.position.second += 0.1;
+				if (int(Ghost.position.second * 10) % 10 == 5) Ghost.position_in_array.second += 1;
+			}
+		}
+	else if (Ghost.direction == "Down") {
+			if ((Map[Ghost.position_in_array.second - 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 10. - (double)Ghost.position_in_array.second * 10) == 5)) {
+				ReNew_Ghost_Direction(Ghost);
+				return;
+			}
+			else if ((Map[Ghost.position_in_array.second - 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 10. - (double)Ghost.position_in_array.second * 10) == 5)) {
+				Ghost.position.second -= 0.1;
+				return;
+			}
+			else {
+				Ghost.position.second -= 0.1;
+				if (int(Ghost.position.second * 10) % 10 == 5) Ghost.position_in_array.second -= 1;
+			}
+		}
+
+	//std::cout << Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] << '\n';
+
+	if (Ghost.position_in_array.first == PacMan.position_in_array.first && Ghost.position_in_array.second == PacMan.position_in_array.second) Game_Over = true;
+}
 
 void Keyboard(unsigned char key, int x, int y) {
 	++Count_of_Clicks;
@@ -886,6 +970,146 @@ void Draw_Cooks() {
 		}
 	}
 }
+void Draw_Red() {
+	ReNew_Ghost_Position(RedGhost);
+	double ForDraw;
+	//Туловище
+	glColor3ub(255, 0, 0);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(RedGhost.position.first + 0.7 * cos(ForDraw), RedGhost.position.second + 0.7 * sin(ForDraw));
+	}
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glVertex2d(RedGhost.position.first - 0.7, RedGhost.position.second);
+	glVertex2d(RedGhost.position.first + 0.7, RedGhost.position.second);
+	glVertex2d(RedGhost.position.first + 0.7, RedGhost.position.second - 0.7);
+	glVertex2d(RedGhost.position.first - 0.7, RedGhost.position.second - 0.7);
+	glEnd();
+	//Правый глаз
+	glColor3ub(255, 255, 255);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(RedGhost.position.first + 0.2 + 0.15 * cos(ForDraw), RedGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
+	}
+	glEnd();
+	//Левый глаз
+	glColor3ub(255, 255, 255);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(RedGhost.position.first - 0.2 + 0.15 * cos(ForDraw), RedGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
+	}
+	glEnd();
+}
+void Draw_Blue() {
+	ReNew_Ghost_Position(BlueGhost);
+	double ForDraw;
+	//Туловище
+	glColor3ub(0, 191, 255);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(BlueGhost.position.first + 0.7 * cos(ForDraw), BlueGhost.position.second + 0.7 * sin(ForDraw));
+	}
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glVertex2d(BlueGhost.position.first - 0.7, BlueGhost.position.second);
+	glVertex2d(BlueGhost.position.first + 0.7, BlueGhost.position.second);
+	glVertex2d(BlueGhost.position.first + 0.7, BlueGhost.position.second - 0.7);
+	glVertex2d(BlueGhost.position.first - 0.7, BlueGhost.position.second - 0.7);
+	glEnd();
+	//Правый глаз
+	glColor3ub(255, 255, 255);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(BlueGhost.position.first + 0.2 + 0.15 * cos(ForDraw), BlueGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
+	}
+	glEnd();
+	//Левый глаз
+	glColor3ub(255, 255, 255);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(BlueGhost.position.first - 0.2 + 0.15 * cos(ForDraw), BlueGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
+	}
+	glEnd();
+}
+void Draw_Pink() {
+	ReNew_Ghost_Position(PinkGhost);
+	double ForDraw;
+	//Туловище
+	glColor3ub(235, 82, 132);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(PinkGhost.position.first + 0.7 * cos(ForDraw), PinkGhost.position.second + 0.7 * sin(ForDraw));
+	}
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glVertex2d(PinkGhost.position.first - 0.7, PinkGhost.position.second);
+	glVertex2d(PinkGhost.position.first + 0.7, PinkGhost.position.second);
+	glVertex2d(PinkGhost.position.first + 0.7, PinkGhost.position.second - 0.7);
+	glVertex2d(PinkGhost.position.first - 0.7, PinkGhost.position.second - 0.7);
+	glEnd();
+	//Правый глаз
+	glColor3ub(255, 255, 255);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(PinkGhost.position.first + 0.2 + 0.15 * cos(ForDraw), PinkGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
+	}
+	glEnd();
+	//Левый глаз
+	glColor3ub(255, 255, 255);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(PinkGhost.position.first - 0.2 + 0.15 * cos(ForDraw), PinkGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
+	}
+	glEnd();
+}
+void Draw_Orange() {
+	ReNew_Ghost_Position(OrangeGhost);
+	double ForDraw;
+	//Туловище
+	glColor3ub(239, 114, 21);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(OrangeGhost.position.first + 0.7 * cos(ForDraw), OrangeGhost.position.second + 0.7 * sin(ForDraw));
+	}
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glVertex2d(OrangeGhost.position.first - 0.7, OrangeGhost.position.second);
+	glVertex2d(OrangeGhost.position.first + 0.7, OrangeGhost.position.second);
+	glVertex2d(OrangeGhost.position.first + 0.7, OrangeGhost.position.second - 0.7);
+	glVertex2d(OrangeGhost.position.first - 0.7, OrangeGhost.position.second - 0.7);
+	glEnd();
+	//Правый глаз
+	glColor3ub(255, 255, 255);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(OrangeGhost.position.first + 0.2 + 0.15 * cos(ForDraw), OrangeGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
+	}
+	glEnd();
+	//Левый глаз
+	glColor3ub(255, 255, 255);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; ++i) {
+		ForDraw = i * acos(-1) / 180;
+		glVertex2d(OrangeGhost.position.first - 0.2 + 0.15 * cos(ForDraw), OrangeGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
+	}
+	glEnd();
+}
 void Draw_Enerjazer() {
 	glColor3ub(255, 255, 255);
 	if (Map[7][1] == 3) {
@@ -937,6 +1161,10 @@ void Display(void) {
 	Draw_PacMan();
 	Draw_Cooks();
 	Draw_Enerjazer();
+	Draw_Red();
+	Draw_Blue();
+	Draw_Pink();
+	Draw_Orange();
 
 	//Отрисовка Красного
 	//Отрисовка Голубого
@@ -946,7 +1174,6 @@ void Display(void) {
 	//Draw_Coords();
 
 	if (!Game_Over) glutPostRedisplay();
-	
 
 	glutSwapBuffers();
 }
