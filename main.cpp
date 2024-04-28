@@ -11,7 +11,6 @@ struct Pac_Man {
 	std::pair<int, int> position_in_array = { 14, 7. };
 	std::string direction;
 	double Sensetive = 8.;
-	double speed = 0.1;
 };
 
 struct Red_Ghost {
@@ -19,7 +18,6 @@ struct Red_Ghost {
 	std::pair<int, int> position_in_array = { 14, 19. };
 	std::string direction = "Left";
 	double Sensetive = 8.;
-	double speed = 0.1;
 };
 
 struct Blue_Ghost {
@@ -27,7 +25,6 @@ struct Blue_Ghost {
 	std::pair<int, int> position_in_array = { 12, 16. };
 	std::string direction = "Right";
 	double Sensetive = 8.;
-	double speed = 0.1;
 };
 
 struct Pink_Ghost {
@@ -35,7 +32,6 @@ struct Pink_Ghost {
 	std::pair<int, int> position_in_array = { 14, 16. };
 	std::string direction = "Up";
 	double Sensetive = 8.;
-	double speed = 0.1;
 };
 
 struct Orange_Ghost {
@@ -43,7 +39,6 @@ struct Orange_Ghost {
 	std::pair<int, int> position_in_array = { 16, 16. };
 	std::string direction = "Left";
 	double Sensetive = 8.;
-	double speed = 0.1;
 };
 
 //Global variables
@@ -97,6 +92,10 @@ void ReNew_PacMan_Position() {
 			PacMan.position.first += 0.01;
 			if (int(PacMan.position.first * 100) % 100 == 50) PacMan.position_in_array.first += 1;
 		}
+		if (PacMan.position_in_array.first == 27 && PacMan.direction == "Right") {
+			PacMan.position_in_array.first = 0;
+			PacMan.position.first = 0.5;
+		}
 	}
 	else if (PacMan.direction == "Left") {
 		if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1) && (int(PacMan.position.first * 100. - (double)PacMan.position_in_array.first * 100) == 50))
@@ -108,6 +107,10 @@ void ReNew_PacMan_Position() {
 		else {
 			PacMan.position.first -= 0.01;
 			if (int(PacMan.position.first * 100) % 100 == 50) PacMan.position_in_array.first -= 1;
+		}
+		if (PacMan.position_in_array.first == 0 && PacMan.direction == "Left") {
+			PacMan.position_in_array.first = 27;
+			PacMan.position.first = 27.5;
 		}
 	}
 	else if (PacMan.direction == "Up") {
@@ -209,7 +212,10 @@ void ReNew_Ghost_Position(T &Ghost) {
 
 	//std::cout << Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] << '\n';
 
-	if (Ghost.position_in_array.first == PacMan.position_in_array.first && Ghost.position_in_array.second == PacMan.position_in_array.second) Game_Over = true;
+	if (Ghost.position_in_array.first == PacMan.position_in_array.first && Ghost.position_in_array.second == PacMan.position_in_array.second) {
+		Game_Over = true;
+		std::cout << "Ты лох";
+	}
 }
 
 void Keyboard(unsigned char key, int x, int y) {
