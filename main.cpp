@@ -67,19 +67,19 @@ Orange_Ghost OrangeGhost;
 
 
 void ReNew_PacMan_Direction() {
-	if (Wanted_direction == "Right" && Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] != 1 && int(PacMan.position.second * 10.) % 10 == 5 && int(PacMan.position.first * 10.) % 10 == 5) {
+	if (Wanted_direction == "Right" && Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] != 1 && int(PacMan.position.second * 100.) % 100 == 50 && int(PacMan.position.first * 100.) % 100 == 50) {
 		PacMan.direction = Wanted_direction;
 		return;
 	}
-	if (Wanted_direction == "Left" && Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] != 1 && int(PacMan.position.second * 10.) % 10 == 5 && int(PacMan.position.first * 10.) % 10 == 5) {
+	if (Wanted_direction == "Left" && Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] != 1 && int(PacMan.position.second * 100.) % 100 == 50 && int(PacMan.position.first * 100.) % 100 == 50) {
 		PacMan.direction = Wanted_direction;
 		return;
 	}
-	if (Wanted_direction == "Up" && Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] != 1 && int(PacMan.position.first * 10.) % 10 == 5 && int(PacMan.position.second * 10.) % 10 == 5) {
+	if (Wanted_direction == "Up" && Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] != 1 && int(PacMan.position.first * 100.) % 100 == 50 && int(PacMan.position.second * 100.) % 100 == 50) {
 		PacMan.direction = Wanted_direction;
 		return;
 	}
-	if (Wanted_direction == "Down" && Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] != 1 && int(PacMan.position.first * 10.) % 10 == 5 && int(PacMan.position.second * 10.) % 10 == 5) {
+	if (Wanted_direction == "Down" && Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] != 1 && int(PacMan.position.first * 100.) % 100 == 50 && int(PacMan.position.second * 100.) % 100 == 50) {
 		PacMan.direction = Wanted_direction;
 		return;
 	}
@@ -87,82 +87,52 @@ void ReNew_PacMan_Direction() {
 void ReNew_PacMan_Position() {
 	ReNew_PacMan_Direction();
 	if (PacMan.direction == "Right") {
-		if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) && (int(PacMan.position.first * 10. - (double)PacMan.position_in_array.first * 10) == 5))
+		if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) && (int(PacMan.position.first * 100. - (double)PacMan.position_in_array.first * 100) == 50))
 			return;
-		else if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) && (int(PacMan.position.first * 10. - (double)PacMan.position_in_array.first * 10) == 5)) {
-			PacMan.position.first += 0.1;
+		else if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) && (int(PacMan.position.first * 100. - (double)PacMan.position_in_array.first * 100) == 50)) {
+			PacMan.position.first += 0.01;
 			return;
 		}
 		else {
-			PacMan.position.first += 0.1;
-			//std::cout << Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] << "\n\n";
-			if (int(PacMan.position.first * 10) % 10 == 5) PacMan.position_in_array.first += 1;
+			PacMan.position.first += 0.01;
+			if (int(PacMan.position.first * 100) % 100 == 50) PacMan.position_in_array.first += 1;
 		}
-
-		/*if (Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) return;
-		else {
-			PacMan.position.first += 1;
-			PacMan.position_in_array.first += 1;
-		}*/
-		//std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 	else if (PacMan.direction == "Left") {
-		if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1) && (int(PacMan.position.first * 10. - (double)PacMan.position_in_array.first * 10) == 5))
+		if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1) && (int(PacMan.position.first * 100. - (double)PacMan.position_in_array.first * 100) == 50))
 			return;
-		else if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1) && (int(PacMan.position.first * 10. - (double)PacMan.position_in_array.first * 10) == 5)) {
-			PacMan.position.first -= 0.1;
+		else if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1) && (int(PacMan.position.first * 100. - (double)PacMan.position_in_array.first * 100) == 50)) {
+			PacMan.position.first -= 0.01;
 			return;
 		}
 		else {
-			PacMan.position.first -= 0.1;
-			//std::cout << Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] << "\n\n";
-			if (int(PacMan.position.first * 10) % 10 == 5) PacMan.position_in_array.first -= 1;
+			PacMan.position.first -= 0.01;
+			if (int(PacMan.position.first * 100) % 100 == 50) PacMan.position_in_array.first -= 1;
 		}
-
-		/*if (Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1) return;
-		else {
-			PacMan.position.first -= 1;
-			PacMan.position_in_array.first -= 1;
-		}*/
-		//std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 	else if (PacMan.direction == "Up") {
-		if ((Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 10. - (double)PacMan.position_in_array.second * 10) == 5))
+		if ((Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 100. - (double)PacMan.position_in_array.second * 100) == 50))
 			return;
-		else if ((Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 10. - (double)PacMan.position_in_array.second * 10) == 5)) {
-			PacMan.position.second += 0.1;
+		else if ((Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 100. - (double)PacMan.position_in_array.second * 100) == 50)) {
+			PacMan.position.second += 0.01;
 			return;
 		}
 		else {
-			PacMan.position.second += 0.1;
-			//std::cout << Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] << "\n\n";
-			if (int(PacMan.position.second * 10) % 10 == 5) PacMan.position_in_array.second += 1;
+			PacMan.position.second += 0.01;
+			if (int(PacMan.position.second * 100) % 100 == 50) PacMan.position_in_array.second += 1;
 		}
-		/*if (Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] == 1) return;
-		else {
-			PacMan.position.second += 1;
-			PacMan.position_in_array.second += 1;
-		}*/
-		//std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 	else if (PacMan.direction == "Down") {
-		if ((Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 10. - (double)PacMan.position_in_array.second * 10) == 5))
+		if ((Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 100. - (double)PacMan.position_in_array.second * 100) == 50))
 			return;
-		else if ((Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 10. - (double)PacMan.position_in_array.second * 10) == 5)) {
-			PacMan.position.second -= 0.1;
+		else if ((Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 100. - (double)PacMan.position_in_array.second * 100) == 50)) {
+			PacMan.position.second -= 0.01;
 			return;
 		}
 		else {
-			PacMan.position.second -= 0.1;
-			//std::cout << Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] << "\n\n";
-			if (int(PacMan.position.second * 10) % 10 == 5) PacMan.position_in_array.second -= 1;
+			PacMan.position.second -= 0.01;
+			if (int(PacMan.position.second * 100) % 100 == 50) PacMan.position_in_array.second -= 1;
 		}
-		/*if (Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] == 1) return;
-		else {
-			PacMan.position.second -= 1;
-			PacMan.position_in_array.second -= 1;
-		}*/
-		//std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 }
 
@@ -181,59 +151,59 @@ void ReNew_Ghost_Direction(T &Ghost) {
 template<typename T>
 void ReNew_Ghost_Position(T &Ghost) {
 	if (Ghost.direction == "Right") {
-			if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] == 1) && (int(Ghost.position.first * 10. - (double)Ghost.position_in_array.first * 10) == 5)) {
+			if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] == 1) && (int(Ghost.position.first * 100. - (double)Ghost.position_in_array.first * 100) == 50)) {
 				ReNew_Ghost_Direction(Ghost);
 				return;
 			}
-			else if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] == 1) && (int(Ghost.position.first * 10. - (double)Ghost.position_in_array.first * 10) == 5)) {
-				Ghost.position.first += 0.1;
+			else if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] == 1) && (int(Ghost.position.first * 100. - (double)Ghost.position_in_array.first * 100) == 50)) {
+				Ghost.position.first += 0.01;
 					return;
 			}
 			else {
-				Ghost.position.first += 0.1;
-				if (int(Ghost.position.first * 10) % 10 == 5) Ghost.position_in_array.first += 1;
+				Ghost.position.first += 0.01;
+				if (int(Ghost.position.first * 100) % 100 == 50) Ghost.position_in_array.first += 1;
 			}
 		}
 	else if (Ghost.direction == "Left") {
-			if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first - 1] == 1) && (int(Ghost.position.first * 10. - (double)Ghost.position_in_array.first * 10) == 5)) {
+			if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first - 1] == 1) && (int(Ghost.position.first * 100. - (double)Ghost.position_in_array.first * 100) == 50)) {
 				ReNew_Ghost_Direction(Ghost);
 				return;
 			}
-			else if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first - 1] == 1) && (int(Ghost.position.first * 10. - (double)Ghost.position_in_array.first * 10) == 5)) {
-				Ghost.position.first -= 0.1;
+			else if ((Map[Ghost.position_in_array.second][Ghost.position_in_array.first - 1] == 1) && (int(Ghost.position.first * 100. - (double)Ghost.position_in_array.first * 100) == 50)) {
+				Ghost.position.first -= 0.01;
 				return;
 			}
 			else {
-				Ghost.position.first -= 0.1;
-				if (int(Ghost.position.first * 10) % 10 == 5) Ghost.position_in_array.first -= 1;
+				Ghost.position.first -= 0.01;
+				if (int(Ghost.position.first * 100) % 100 == 50) Ghost.position_in_array.first -= 1;
 			}
 		}
 	else if (Ghost.direction == "Up") {
-			if ((Map[Ghost.position_in_array.second + 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 10. - (double)Ghost.position_in_array.second * 10) == 5)) {
+			if ((Map[Ghost.position_in_array.second + 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 100. - (double)Ghost.position_in_array.second * 100) == 50)) {
 				ReNew_Ghost_Direction(Ghost);
 				return;
 			}
-			else if ((Map[Ghost.position_in_array.second + 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 10. - (double)Ghost.position_in_array.second * 10) == 5)) {
+			else if ((Map[Ghost.position_in_array.second + 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 100. - (double)Ghost.position_in_array.second * 100) == 50)) {
 				Ghost.position.second += 0.1;
 				return;
 			}
 			else {
-				Ghost.position.second += 0.1;
-				if (int(Ghost.position.second * 10) % 10 == 5) Ghost.position_in_array.second += 1;
+				Ghost.position.second += 0.01;
+				if (int(Ghost.position.second * 100) % 100 == 50) Ghost.position_in_array.second += 1;
 			}
 		}
 	else if (Ghost.direction == "Down") {
-			if ((Map[Ghost.position_in_array.second - 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 10. - (double)Ghost.position_in_array.second * 10) == 5)) {
+			if ((Map[Ghost.position_in_array.second - 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 100. - (double)Ghost.position_in_array.second * 100) == 50)) {
 				ReNew_Ghost_Direction(Ghost);
 				return;
 			}
-			else if ((Map[Ghost.position_in_array.second - 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 10. - (double)Ghost.position_in_array.second * 10) == 5)) {
-				Ghost.position.second -= 0.1;
+			else if ((Map[Ghost.position_in_array.second - 1][Ghost.position_in_array.first] == 1) && (int(Ghost.position.second * 100. - (double)Ghost.position_in_array.second * 100) == 50)) {
+				Ghost.position.second -= 0.01;
 				return;
 			}
 			else {
-				Ghost.position.second -= 0.1;
-				if (int(Ghost.position.second * 10) % 10 == 5) Ghost.position_in_array.second -= 1;
+				Ghost.position.second -= 0.01;
+				if (int(Ghost.position.second * 100) % 100 == 50) Ghost.position_in_array.second -= 1;
 			}
 		}
 
@@ -957,14 +927,12 @@ void Draw_Coords() {
 void Draw_Cooks() {
 	glColor3ub(255, 100, 0);
 	double ForDraw;
+	glPointSize(7);
 	for (int j = 0; j < 32; ++j) {
 		for (int k = 0; k < 28; ++k) {
 			if (Map[j][k] == 2) {
-				glBegin(GL_POLYGON);
-				for (int i = 0; i < 360; ++i) {
-					ForDraw = i * acos(-1) / 180;
-					glVertex2d((k + 0.5) + 0.2 * cos(ForDraw), (j + 0.5) + 0.2 * sin(ForDraw));
-				}
+				glBegin(GL_POINTS);
+				glVertex2d(k + 0.5, j + 0.5);
 				glEnd();
 			}
 		}
