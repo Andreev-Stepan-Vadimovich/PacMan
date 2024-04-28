@@ -10,7 +10,7 @@ struct Pac_Man {
 	std::pair<double, double> position = { 14., 7.5 };
 	std::pair<int, int> position_in_array = { 14, 7. };
 	std::string direction;
-	double speed = 0.001;
+	double speed = 0.1;
 };
 
 struct Red_Ghost {
@@ -40,11 +40,12 @@ struct Orange_Ghost {
 //Global variables
 bool Game_Over = false;
 int Count_Of_HP = 3;
-int Count_Of_cookies = 244;
+int Count_Of_cookies = 240;
 int Count_of_Points = 0;
 int Level = 1;
 int Count_of_Clicks = 0;
 double Move = 0.;
+std::string Wanted_direction;
 
 std::vector<std::vector<int>> Map(32, std::vector<int>(28));
 
@@ -56,7 +57,26 @@ Pink_Ghost PinkGhost;
 Orange_Ghost OrangeGhost;
 
 
+void ReNew_PacMan_Direction() {
+	if (Wanted_direction == "Right" && Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] != 1 && int(PacMan.position.second * 10.) % 10 == 5 && int(PacMan.position.first * 10.) % 10 == 5) {
+		PacMan.direction = Wanted_direction;
+		return;
+	}
+	if (Wanted_direction == "Left" && Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] != 1 && int(PacMan.position.second * 10.) % 10 == 5 && int(PacMan.position.first * 10.) % 10 == 5) {
+		PacMan.direction = Wanted_direction;
+		return;
+	}
+	if (Wanted_direction == "Up" && Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] != 1 && int(PacMan.position.first * 10.) % 10 == 5 && int(PacMan.position.second * 10.) % 10 == 5) {
+		PacMan.direction = Wanted_direction;
+		return;
+	}
+	if (Wanted_direction == "Down" && Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] != 1 && int(PacMan.position.first * 10.) % 10 == 5 && int(PacMan.position.second * 10.) % 10 == 5) {
+		PacMan.direction = Wanted_direction;
+		return;
+	}
+}
 void ReNew_PacMan_Position() {
+	ReNew_PacMan_Direction();
 	if (PacMan.direction == "Right") {
 		if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1) && (int(PacMan.position.first * 10. - (double)PacMan.position_in_array.first * 10) == 5))
 			return;
@@ -75,7 +95,7 @@ void ReNew_PacMan_Position() {
 			PacMan.position.first += 1;
 			PacMan.position_in_array.first += 1;
 		}*/
-		std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
+		//std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 	else if (PacMan.direction == "Left") {
 		if ((Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1) && (int(PacMan.position.first * 10. - (double)PacMan.position_in_array.first * 10) == 5))
@@ -95,7 +115,7 @@ void ReNew_PacMan_Position() {
 			PacMan.position.first -= 1;
 			PacMan.position_in_array.first -= 1;
 		}*/
-		std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
+		//std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 	else if (PacMan.direction == "Up") {
 		if ((Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 10. - (double)PacMan.position_in_array.second * 10) == 5))
@@ -114,7 +134,7 @@ void ReNew_PacMan_Position() {
 			PacMan.position.second += 1;
 			PacMan.position_in_array.second += 1;
 		}*/
-		std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
+		//std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 	else if (PacMan.direction == "Down") {
 		if ((Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] == 1) && (int(PacMan.position.second * 10. - (double)PacMan.position_in_array.second * 10) == 5))
@@ -133,7 +153,7 @@ void ReNew_PacMan_Position() {
 			PacMan.position.second -= 1;
 			PacMan.position_in_array.second -= 1;
 		}*/
-		std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
+		//std::cout << PacMan.position_in_array.first << ' ' << PacMan.position_in_array.second << '\n';
 	}
 }
 
@@ -141,24 +161,24 @@ void ReNew_PacMan_Position() {
 void Keyboard(unsigned char key, int x, int y) {
 	++Count_of_Clicks;
 	if (key == 'w' || key == 'W' || key == 'ц' || key == 'Ц') {
-		PacMan.direction = "Up";
+		Wanted_direction = "Up";
 	}
 	else if (key == 's' || key == 'S' || key == 'ы' || key == 'Ы') {
-		PacMan.direction = "Down";
+		Wanted_direction = "Down";
 	}
 	else if (key == 'd' || key == 'D' || key == 'в' || key == 'В') {
 		if (Count_of_Clicks == 1) {
 			PacMan.position.first += 0.5;
 			PacMan.position_in_array.first = 14;
 		}
-		PacMan.direction = "Right";
+		Wanted_direction = "Right";
 	}
 	else if (key == 'a' || key == 'A' || key == 'ф' || key == 'Ф') {
 		if (Count_of_Clicks == 1) {
 			PacMan.position.first -= 0.5;
 			PacMan.position_in_array.first = 13;
 		}
-		PacMan.direction = "Left";
+		Wanted_direction = "Left";
 	}
 }
 
@@ -654,6 +674,7 @@ void Draw_PacMan() {
 	if (Map[PacMan.position_in_array.second][PacMan.position_in_array.first] == 2) {
 		Map[PacMan.position_in_array.second][PacMan.position_in_array.first] = 0;
 		Count_of_Points += 10;
+		--Count_Of_cookies;
 	}
 
 	double ForDraw;
@@ -925,6 +946,7 @@ void Display(void) {
 	//Draw_Coords();
 
 	if (!Game_Over) glutPostRedisplay();
+	
 
 	glutSwapBuffers();
 }
@@ -948,13 +970,6 @@ int main(int argc, char** argv) {
 	srand(time(NULL));
 
 	Make_Map();
-
-	/*for (int i = 0; i < 32; ++i) {
-		for (int j = 0; j < 28; ++j) {
-			std::cout << Map[i][j] << ' ';
-		}
-		std::cout << '\n';
-	}*/
 
 	//Инициализация
 	glutInit(&argc, argv);
