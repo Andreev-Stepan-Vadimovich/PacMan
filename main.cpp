@@ -10,35 +10,38 @@ struct Pac_Man {
 	std::pair<double, double> position = { 14., 7.5 };
 	std::pair<int, int> position_in_array = { 14, 7. };
 	std::string direction;
-	double Sensetive = 8.;
 };
 
 struct Red_Ghost {
-	std::pair<double, double> position = { 14., 19.5 };
+	std::pair<double, double> position = { 14.5, 19.5 };
 	std::pair<int, int> position_in_array = { 14, 19. };
+	bool on_hunt = false;
 	std::string direction = "Left";
-	double Sensetive = 8.;
+	double Sensetive = 20.;
 };
 
 struct Blue_Ghost {
-	std::pair<double, double> position = { 12.5, 16.5 };
+	std::pair<double, double> position = { 12., 16.5 };
 	std::pair<int, int> position_in_array = { 12, 16. };
-	std::string direction = "Right";
-	double Sensetive = 8.;
+	bool on_hunt = false;
+	std::string direction;
+	double Sensetive = 12.;
 };
 
 struct Pink_Ghost {
-	std::pair<double, double> position = { 14.5, 16.5 };
+	std::pair<double, double> position = { 14., 16.5 };
 	std::pair<int, int> position_in_array = { 14, 16. };
-	std::string direction = "Up";
-	double Sensetive = 8.;
+	bool on_hunt = false;
+	std::string direction;
+	double Sensetive = 12.;
 };
 
 struct Orange_Ghost {
-	std::pair<double, double> position = { 16.5, 16.5 };
+	std::pair<double, double> position = { 16., 16.5 };
 	std::pair<int, int> position_in_array = { 16, 16. };
-	std::string direction = "Left";
-	double Sensetive = 8.;
+	bool on_hunt = false;
+	std::string direction;
+	double Sensetive = 12.;
 };
 
 //Global variables
@@ -142,11 +145,39 @@ void ReNew_PacMan_Position() {
 template<typename T>
 void ReNew_Ghost_Direction(T &Ghost) {
 	std::vector<std::string> Possible_Ways;
-	if (Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] != 1 && Ghost.direction != "Right") Possible_Ways.push_back("Right");
-	if (Map[Ghost.position_in_array.second][Ghost.position_in_array.first - 1] != 1 && Ghost.direction != "Left") Possible_Ways.push_back("Left");
-	if (Map[Ghost.position_in_array.second + 1][Ghost.position_in_array.first] != 1 && Ghost.direction != "Up") Possible_Ways.push_back("Up");
-	if (Map[Ghost.position_in_array.second - 1][Ghost.position_in_array.first] != 1 && Ghost.direction != "Down") Possible_Ways.push_back("Down");
-
+	//std::pair<double, std::string> Feel = {sqrt((PacMan.position_in_array.first - Ghost.position_in_array.first)*(PacMan.position_in_array.first - Ghost.position_in_array.first) + (PacMan.position_in_array.second - Ghost.position_in_array.second)*(PacMan.position_in_array.second - Ghost.position_in_array.second)), Ghost.direction};
+	
+	
+	if (Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] != 1 && Ghost.direction != "Left") {
+		Possible_Ways.push_back("Right");
+		/*if (sqrt((PacMan.position_in_array.first - Ghost.position_in_array.first + 1) * (PacMan.position_in_array.first - Ghost.position_in_array.first + 1) + (PacMan.position_in_array.second - Ghost.position_in_array.second) * (PacMan.position_in_array.second - Ghost.position_in_array.second)) < Ghost.Sensetive) {
+			Feel = { sqrt((PacMan.position_in_array.first - Ghost.position_in_array.first + 1) * (PacMan.position_in_array.first - Ghost.position_in_array.first + 1) + (PacMan.position_in_array.second - Ghost.position_in_array.second) * (PacMan.position_in_array.second - Ghost.position_in_array.second)), "Right" };
+		}*/
+	}
+	if (Map[Ghost.position_in_array.second][Ghost.position_in_array.first - 1] != 1 && Ghost.direction != "Right") {
+		Possible_Ways.push_back("Left");
+		/*if (sqrt((PacMan.position_in_array.first - Ghost.position_in_array.first - 1) * (PacMan.position_in_array.first - Ghost.position_in_array.first - 1) + (PacMan.position_in_array.second - Ghost.position_in_array.second) * (PacMan.position_in_array.second - Ghost.position_in_array.second)) < Ghost.Sensetive) {
+			Feel = { sqrt((PacMan.position_in_array.first - Ghost.position_in_array.first - 1) * (PacMan.position_in_array.first - Ghost.position_in_array.first - 1) + (PacMan.position_in_array.second - Ghost.position_in_array.second) * (PacMan.position_in_array.second - Ghost.position_in_array.second)), "Left" };
+		}*/
+	}
+	if (Map[Ghost.position_in_array.second + 1][Ghost.position_in_array.first] != 1 && Ghost.direction != "Down") {
+		Possible_Ways.push_back("Up");
+		/*if (sqrt((PacMan.position_in_array.first - Ghost.position_in_array.first) * (PacMan.position_in_array.first - Ghost.position_in_array.first) + (PacMan.position_in_array.second - Ghost.position_in_array.second - 1) * (PacMan.position_in_array.second - Ghost.position_in_array.second - 1)) < Ghost.Sensetive) {
+			Feel = { sqrt((PacMan.position_in_array.first - Ghost.position_in_array.first) * (PacMan.position_in_array.first - Ghost.position_in_array.first) + (PacMan.position_in_array.second - Ghost.position_in_array.second - 1) * (PacMan.position_in_array.second - Ghost.position_in_array.second - 1)), "Up" };
+		}*/
+	}
+	if (Map[Ghost.position_in_array.second - 1][Ghost.position_in_array.first] != 1 && Ghost.direction != "Up") {
+		Possible_Ways.push_back("Down");
+		/*if (sqrt((PacMan.position_in_array.first - Ghost.position_in_array.first) * (PacMan.position_in_array.first - Ghost.position_in_array.first) + (PacMan.position_in_array.second - Ghost.position_in_array.second + 1) * (PacMan.position_in_array.second - Ghost.position_in_array.second + 1)) < Ghost.Sensetive) {
+			Feel = { sqrt((PacMan.position_in_array.first - Ghost.position_in_array.first) * (PacMan.position_in_array.first - Ghost.position_in_array.first) + (PacMan.position_in_array.second - Ghost.position_in_array.second + 1) * (PacMan.position_in_array.second - Ghost.position_in_array.second + 1)), "Down" };
+		}*/
+	}
+	
+	/*if (Feel.first < Ghost.Sensetive) {
+		Ghost.direction = Feel.second;
+		return;
+	}*/
+	
 	Ghost.direction = Possible_Ways[rand() % Possible_Ways.size()];
 	return;
 }
@@ -164,7 +195,14 @@ void ReNew_Ghost_Position(T &Ghost) {
 			}
 			else {
 				Ghost.position.first += 0.01;
-				if (int(Ghost.position.first * 100) % 100 == 50) Ghost.position_in_array.first += 1;
+				if (int(Ghost.position.first * 100) % 100 == 50) {
+					Ghost.position_in_array.first += 1;
+					if (Ghost.position_in_array.first == 27 && Ghost.position_in_array.second == 16 && Ghost.direction == "Right") {
+						Ghost.position_in_array.first = 1;
+						Ghost.position.first = 1.5;
+					}
+					ReNew_Ghost_Direction(Ghost);
+				}
 			}
 		}
 	else if (Ghost.direction == "Left") {
@@ -178,7 +216,14 @@ void ReNew_Ghost_Position(T &Ghost) {
 			}
 			else {
 				Ghost.position.first -= 0.01;
-				if (int(Ghost.position.first * 100) % 100 == 50) Ghost.position_in_array.first -= 1;
+				if (int(Ghost.position.first * 100) % 100 == 50) {
+					Ghost.position_in_array.first -= 1;
+					if (Ghost.position_in_array.first == 0 && Ghost.position_in_array.second == 16 && Ghost.direction == "Left") {
+						Ghost.position_in_array.first = 26;
+						Ghost.position.first = 26.5;
+					}
+					ReNew_Ghost_Direction(Ghost);
+				}
 			}
 		}
 	else if (Ghost.direction == "Up") {
@@ -192,7 +237,10 @@ void ReNew_Ghost_Position(T &Ghost) {
 			}
 			else {
 				Ghost.position.second += 0.01;
-				if (int(Ghost.position.second * 100) % 100 == 50) Ghost.position_in_array.second += 1;
+				if (int(Ghost.position.second * 100) % 100 == 50) {
+					Ghost.position_in_array.second += 1;
+					ReNew_Ghost_Direction(Ghost);
+				}
 			}
 		}
 	else if (Ghost.direction == "Down") {
@@ -206,7 +254,10 @@ void ReNew_Ghost_Position(T &Ghost) {
 			}
 			else {
 				Ghost.position.second -= 0.01;
-				if (int(Ghost.position.second * 100) % 100 == 50) Ghost.position_in_array.second -= 1;
+				if (int(Ghost.position.second * 100) % 100 == 50) {
+					Ghost.position_in_array.second -= 1;
+					ReNew_Ghost_Direction(Ghost);
+				}
 			}
 		}
 
@@ -980,7 +1031,13 @@ void Draw_Red() {
 	glEnd();
 }
 void Draw_Blue() {
-	ReNew_Ghost_Position(BlueGhost);
+	if (Count_Of_cookies <= 150 && !BlueGhost.on_hunt) {
+		BlueGhost.direction = "Left";
+		BlueGhost.position = { 14.5, 19.5 };
+		BlueGhost.position_in_array = { 14, 19 };
+		BlueGhost.on_hunt = true;
+	}
+	if (Count_Of_cookies <= 150) ReNew_Ghost_Position(BlueGhost);
 	double ForDraw;
 	//Туловище
 	glColor3ub(0, 191, 255);
@@ -1015,7 +1072,13 @@ void Draw_Blue() {
 	glEnd();
 }
 void Draw_Pink() {
-	ReNew_Ghost_Position(PinkGhost);
+	if (Count_Of_cookies <= 200 && !PinkGhost.on_hunt) {
+		PinkGhost.direction = "Left";
+		PinkGhost.position = { 14.5, 19.5 };
+		PinkGhost.position_in_array = { 14, 19 };
+		PinkGhost.on_hunt = true;
+	}
+	if (Count_Of_cookies <= 200) ReNew_Ghost_Position(PinkGhost);
 	double ForDraw;
 	//Туловище
 	glColor3ub(235, 82, 132);
@@ -1050,7 +1113,13 @@ void Draw_Pink() {
 	glEnd();
 }
 void Draw_Orange() {
-	ReNew_Ghost_Position(OrangeGhost);
+	if (Count_Of_cookies <= 100 && !OrangeGhost.on_hunt) {
+		OrangeGhost.direction = "Left";
+		OrangeGhost.position = { 14.5, 19.5 };
+		OrangeGhost.position_in_array = { 14, 19 };
+		OrangeGhost.on_hunt = true;
+	}
+	if (Count_Of_cookies <= 100) ReNew_Ghost_Position(OrangeGhost);
 	double ForDraw;
 	//Туловище
 	glColor3ub(239, 114, 21);
