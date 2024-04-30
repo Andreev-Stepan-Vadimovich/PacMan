@@ -46,11 +46,14 @@ struct Orange_Ghost {
 
 //Global variables
 bool Game_Over = false;
+bool Win = false;
 int Count_Of_HP = 3;
 int Count_Of_cookies = 240;
 int Count_of_Points = 0;
 int Level = 1;
 int Count_of_Clicks = 0;
+bool PacMan_Enerjaze = false;
+int Enerjaze_Time = 0;
 double Move = 0.;
 std::string Wanted_direction;
 
@@ -93,7 +96,9 @@ void ReNew_PacMan_Position() {
 		}
 		else {
 			PacMan.position.first += 0.01;
-			if (int(PacMan.position.first * 100) % 100 == 50) PacMan.position_in_array.first += 1;
+			if (int(PacMan.position.first * 100) % 100 == 50) {
+				PacMan.position_in_array.first += 1;
+			}
 		}
 		if (PacMan.position_in_array.first == 27 && PacMan.direction == "Right") {
 			PacMan.position_in_array.first = 0;
@@ -109,7 +114,9 @@ void ReNew_PacMan_Position() {
 		}
 		else {
 			PacMan.position.first -= 0.01;
-			if (int(PacMan.position.first * 100) % 100 == 50) PacMan.position_in_array.first -= 1;
+			if (int(PacMan.position.first * 100) % 100 == 50) {
+				PacMan.position_in_array.first -= 1;
+			}
 		}
 		if (PacMan.position_in_array.first == 0 && PacMan.direction == "Left") {
 			PacMan.position_in_array.first = 27;
@@ -125,7 +132,9 @@ void ReNew_PacMan_Position() {
 		}
 		else {
 			PacMan.position.second += 0.01;
-			if (int(PacMan.position.second * 100) % 100 == 50) PacMan.position_in_array.second += 1;
+			if (int(PacMan.position.second * 100) % 100 == 50) {
+				PacMan.position_in_array.second += 1;
+			}
 		}
 	}
 	else if (PacMan.direction == "Down") {
@@ -137,7 +146,9 @@ void ReNew_PacMan_Position() {
 		}
 		else {
 			PacMan.position.second -= 0.01;
-			if (int(PacMan.position.second * 100) % 100 == 50) PacMan.position_in_array.second -= 1;
+			if (int(PacMan.position.second * 100) % 100 == 50) {
+				PacMan.position_in_array.second -= 1;
+			}
 		}
 	}
 }
@@ -197,6 +208,11 @@ void ReNew_Ghost_Position(T &Ghost) {
 				Ghost.position.first += 0.01;
 				if (int(Ghost.position.first * 100) % 100 == 50) {
 					Ghost.position_in_array.first += 1;
+
+					if (PacMan_Enerjaze) {
+						Enerjaze_Time += 1;
+					}
+
 					if (Ghost.position_in_array.first == 27 && Ghost.position_in_array.second == 16 && Ghost.direction == "Right") {
 						Ghost.position_in_array.first = 1;
 						Ghost.position.first = 1.5;
@@ -218,6 +234,11 @@ void ReNew_Ghost_Position(T &Ghost) {
 				Ghost.position.first -= 0.01;
 				if (int(Ghost.position.first * 100) % 100 == 50) {
 					Ghost.position_in_array.first -= 1;
+
+					if (PacMan_Enerjaze) {
+						Enerjaze_Time += 1;
+					}
+
 					if (Ghost.position_in_array.first == 0 && Ghost.position_in_array.second == 16 && Ghost.direction == "Left") {
 						Ghost.position_in_array.first = 26;
 						Ghost.position.first = 26.5;
@@ -239,6 +260,11 @@ void ReNew_Ghost_Position(T &Ghost) {
 				Ghost.position.second += 0.01;
 				if (int(Ghost.position.second * 100) % 100 == 50) {
 					Ghost.position_in_array.second += 1;
+
+					if (PacMan_Enerjaze) {
+						Enerjaze_Time += 1;
+					}
+
 					ReNew_Ghost_Direction(Ghost);
 				}
 			}
@@ -256,16 +282,31 @@ void ReNew_Ghost_Position(T &Ghost) {
 				Ghost.position.second -= 0.01;
 				if (int(Ghost.position.second * 100) % 100 == 50) {
 					Ghost.position_in_array.second -= 1;
+
+					if (PacMan_Enerjaze) {
+						Enerjaze_Time += 1;
+					}
+
 					ReNew_Ghost_Direction(Ghost);
 				}
 			}
 		}
 
-	//std::cout << Map[Ghost.position_in_array.second][Ghost.position_in_array.first + 1] << '\n';
-
 	if (Ghost.position_in_array.first == PacMan.position_in_array.first && Ghost.position_in_array.second == PacMan.position_in_array.second) {
-		Game_Over = true;
-		std::cout << "Ты лох";
+		if (!PacMan_Enerjaze) {
+			if (Count_Of_HP == 0) Game_Over = true;
+			else {
+				--Count_Of_HP;
+				PacMan.position = { 14.5, 7.5 };
+				PacMan.position_in_array = { 14, 7 };
+			}
+		}
+		else {
+			Count_of_Points += 200;
+			Ghost.position_in_array = { 14, 19 };
+			Ghost.position = { 14.5, 19.5 };
+			Ghost.direction = "Left";
+		}
 	}
 }
 
@@ -782,10 +823,19 @@ void Draw_Whalls() {
 void Draw_PacMan() {
 	ReNew_PacMan_Position();
 
+	if (Enerjaze_Time == 60) {
+		PacMan_Enerjaze = false;
+		Enerjaze_Time = 0;
+	}
 	if (Map[PacMan.position_in_array.second][PacMan.position_in_array.first] == 2) {
 		Map[PacMan.position_in_array.second][PacMan.position_in_array.first] = 0;
 		Count_of_Points += 10;
 		--Count_Of_cookies;
+	}
+	if (Map[PacMan.position_in_array.second][PacMan.position_in_array.first] == 3) {
+		Map[PacMan.position_in_array.second][PacMan.position_in_array.first] = 0;
+		Count_of_Points += 50;
+		PacMan_Enerjaze = true;
 	}
 
 	double ForDraw;
@@ -999,7 +1049,14 @@ void Draw_Red() {
 	ReNew_Ghost_Position(RedGhost);
 	double ForDraw;
 	//Туловище
-	glColor3ub(255, 0, 0);
+	std::vector<int> colors(3);
+	if (PacMan_Enerjaze) {
+		colors = { 0, 0, 255 };
+	}
+	else {
+		colors = { 255, 0, 0 };
+	}
+	glColor3ub(colors[0], colors[1], colors[2]);
 	glBegin(GL_POLYGON);
 	for (int i = 0; i < 360; ++i) {
 		ForDraw = i * acos(-1) / 180;
@@ -1040,7 +1097,14 @@ void Draw_Blue() {
 	if (Count_Of_cookies <= 150) ReNew_Ghost_Position(BlueGhost);
 	double ForDraw;
 	//Туловище
-	glColor3ub(0, 191, 255);
+	std::vector<int> colors;
+	if (PacMan_Enerjaze) {
+		colors = { 0, 0, 255 };
+	}
+	else {
+		colors = { 0, 191, 255 };
+	}
+	glColor3ub(colors[0], colors[1], colors[2]);
 	glBegin(GL_POLYGON);
 	for (int i = 0; i < 360; ++i) {
 		ForDraw = i * acos(-1) / 180;
@@ -1081,7 +1145,14 @@ void Draw_Pink() {
 	if (Count_Of_cookies <= 200) ReNew_Ghost_Position(PinkGhost);
 	double ForDraw;
 	//Туловище
-	glColor3ub(235, 82, 132);
+	std::vector<int> colors;
+	if (PacMan_Enerjaze) {
+		colors = { 0, 0, 255 };
+	}
+	else {
+		colors = { 235, 82, 132 };
+	}
+	glColor3ub(colors[0], colors[1], colors[2]);
 	glBegin(GL_POLYGON);
 	for (int i = 0; i < 360; ++i) {
 		ForDraw = i * acos(-1) / 180;
@@ -1122,7 +1193,14 @@ void Draw_Orange() {
 	if (Count_Of_cookies <= 100) ReNew_Ghost_Position(OrangeGhost);
 	double ForDraw;
 	//Туловище
-	glColor3ub(239, 114, 21);
+	std::vector<int> colors;
+	if (PacMan_Enerjaze) {
+		colors = { 0, 0, 255 };
+	}
+	else {
+		colors = { 239, 114, 21 };
+	}
+	glColor3ub(colors[0], colors[1], colors[2]);
 	glBegin(GL_POLYGON);
 	for (int i = 0; i < 360; ++i) {
 		ForDraw = i * acos(-1) / 180;
@@ -1208,11 +1286,6 @@ void Display(void) {
 	Draw_Blue();
 	Draw_Pink();
 	Draw_Orange();
-
-	//Отрисовка Красного
-	//Отрисовка Голубого
-	//Отрисовка Розового
-	//Отрисовка Оранжевого
 
 	//Draw_Coords();
 
