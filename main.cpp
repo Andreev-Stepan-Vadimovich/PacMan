@@ -17,7 +17,7 @@ struct Red_Ghost {
 	std::pair<int, int> position_in_array = { 14, 19. };
 	bool on_hunt = false;
 	std::string direction = "Left";
-	double Sensetive = 20.;
+	double Sensetive = 12.;
 };
 
 struct Blue_Ghost {
@@ -50,12 +50,16 @@ bool Win = false;
 int Count_Of_HP = 3;
 int Count_Of_cookies = 240;
 int Count_of_Points = 0;
-int Level = 1;
+//int Level = 1;
 int Count_of_Clicks = 0;
 bool PacMan_Enerjaze = false;
 int Enerjaze_Time = 0;
 double Move = 0.;
 std::string Wanted_direction;
+
+std::vector<std::pair<double, double>> Possible_Fruit_Position(4);
+std::pair<double, double> Fruit_Position = { 0, 0 };
+bool Need_Draw_Fruit = false;
 
 std::vector<std::vector<int>> Map(32, std::vector<int>(28));
 
@@ -151,6 +155,15 @@ void ReNew_PacMan_Position() {
 			}
 		}
 	}
+}
+
+void ReNew_Fruit_Position() {
+	Possible_Fruit_Position[0] = { 13.5, 7.5 };
+	Possible_Fruit_Position[1] = { 14.5, 7.5 };
+	Possible_Fruit_Position[2] = { 9.5, 11.5 };
+	Possible_Fruit_Position[3] = { 18.5, 11.5 };
+	int indx = rand() % 4;
+	Fruit_Position = Possible_Fruit_Position[indx];
 }
 
 template<typename T>
@@ -294,7 +307,9 @@ void ReNew_Ghost_Position(T &Ghost) {
 
 	if (Ghost.position_in_array.first == PacMan.position_in_array.first && Ghost.position_in_array.second == PacMan.position_in_array.second) {
 		if (!PacMan_Enerjaze) {
-			if (Count_Of_HP == 0) Game_Over = true;
+			if (Count_Of_HP == 0) {
+				Game_Over = true;
+			}
 			else {
 				--Count_Of_HP;
 				PacMan.position = { 14.5, 7.5 };
@@ -333,7 +348,6 @@ void Keyboard(unsigned char key, int x, int y) {
 		Wanted_direction = "Left";
 	}
 }
-
 
 void Draw_Whalls() {
 	{
@@ -820,10 +834,46 @@ void Draw_Whalls() {
 		glEnd();
 	}
 }
+void Draw_Fruct() {
+	if (Count_Of_cookies == 150 && !Need_Draw_Fruit) {
+		ReNew_Fruit_Position();
+		Need_Draw_Fruit = true;
+	}
+	if (Count_Of_cookies == 70 && !Need_Draw_Fruit) {
+		ReNew_Fruit_Position();
+		Need_Draw_Fruit = true;
+	}
+
+	if (Need_Draw_Fruit) {
+		glColor3ub(255, 255, 255);
+		glBegin(GL_LINES);
+		glVertex2d(Fruit_Position.first - 0.3, Fruit_Position.second - 0.3);
+		glVertex2d(Fruit_Position.first, Fruit_Position.second + 0.3);
+
+		glVertex2d(Fruit_Position.first + 0.3, Fruit_Position.second - 0.3);
+		glVertex2d(Fruit_Position.first, Fruit_Position.second + 0.3);
+		glEnd();
+
+		double ForDraw;
+		glColor3ub(255, 0, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; ++i) {
+			ForDraw = i * acos(-1) / 180;
+			glVertex2d(Fruit_Position.first - 0.3 + 0.3 * cos(ForDraw), Fruit_Position.second - 0.3 + 0.3 * sin(ForDraw));
+		}
+		glEnd();
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; ++i) {
+			ForDraw = i * acos(-1) / 180;
+			glVertex2d(Fruit_Position.first + 0.3 + 0.3 * cos(ForDraw), Fruit_Position.second - 0.3 + 0.3 * sin(ForDraw));
+		}
+		glEnd();
+	}
+}
 void Draw_PacMan() {
 	ReNew_PacMan_Position();
 
-	if (Enerjaze_Time == 60) {
+	if (Enerjaze_Time == 80) {
 		PacMan_Enerjaze = false;
 		Enerjaze_Time = 0;
 	}
@@ -834,8 +884,14 @@ void Draw_PacMan() {
 	}
 	if (Map[PacMan.position_in_array.second][PacMan.position_in_array.first] == 3) {
 		Map[PacMan.position_in_array.second][PacMan.position_in_array.first] = 0;
+		Enerjaze_Time = 0;
 		Count_of_Points += 50;
 		PacMan_Enerjaze = true;
+	}
+	if (PacMan.position_in_array.first == floor(Fruit_Position.first) && PacMan.position_in_array.second == floor(Fruit_Position.second)) {
+		Count_of_Points += 100;
+		Need_Draw_Fruit = false;
+		Fruit_Position = { 0,0 };
 	}
 
 	double ForDraw;
@@ -1270,6 +1326,39 @@ void Draw_Enerjazer() {
 		glEnd();
 	}
 }
+void Draw_HP() {
+	if (Count_Of_HP >= 1) {
+		double ForDraw;
+		glColor3ub(255, 255, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; ++i) {
+			ForDraw = i * acos(-1) / 180;
+			glVertex2d(1.5 + 0.6 * cos(ForDraw), 31.3 + 0.6 * sin(ForDraw));
+		}
+		glEnd();
+	}
+	if (Count_Of_HP >= 2) {
+		double ForDraw;
+		glColor3ub(255, 255, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; ++i) {
+			ForDraw = i * acos(-1) / 180;
+			glVertex2d(3.5 + 0.6 * cos(ForDraw), 31.3 + 0.6 * sin(ForDraw));
+		}
+		glEnd();
+	}
+	if (Count_Of_HP == 3) {
+		double ForDraw;
+		glColor3ub(255, 255, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; ++i) {
+			ForDraw = i * acos(-1) / 180;
+			glVertex2d(5.5 + 0.6 * cos(ForDraw), 31.3 + 0.6 * sin(ForDraw));
+		}
+		glEnd();
+	}
+}
+
 
 void Display(void) {
 	glMatrixMode(GL_PROJECTION);
@@ -1278,7 +1367,9 @@ void Display(void) {
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	
 	Draw_Whalls();
+	Draw_Fruct();
 	Draw_PacMan();
 	Draw_Cooks();
 	Draw_Enerjazer();
@@ -1286,6 +1377,7 @@ void Display(void) {
 	Draw_Blue();
 	Draw_Pink();
 	Draw_Orange();
+	Draw_HP();
 
 	//Draw_Coords();
 
