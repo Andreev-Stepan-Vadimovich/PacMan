@@ -50,7 +50,6 @@ bool Win = false;
 int Count_Of_HP = 3;
 int Count_Of_cookies = 240;
 int Count_of_Points = 0;
-//int Level = 1;
 int Count_of_Clicks = 0;
 bool PacMan_Enerjaze = false;
 int Enerjaze_Time = 0;
@@ -60,6 +59,7 @@ std::string Wanted_direction;
 std::vector<std::pair<double, double>> Possible_Fruit_Position(4);
 std::pair<double, double> Fruit_Position = { 0, 0 };
 bool Need_Draw_Fruit = false;
+int Count_Of_Fruits = 0;
 
 std::vector<std::vector<int>> Map(32, std::vector<int>(28));
 
@@ -70,6 +70,292 @@ Blue_Ghost BlueGhost;
 Pink_Ghost PinkGhost;
 Orange_Ghost OrangeGhost;
 
+void Draw_Coords() {
+	glColor3ub(255, 255, 255);
+	glLineWidth(1);
+	glBegin(GL_LINES);
+	glVertex2d(27., 0);
+	glVertex2d(27., 32);
+
+	glVertex2d(26., 0);
+	glVertex2d(26., 32);
+
+	glVertex2d(25., 0);
+	glVertex2d(25., 32);
+
+	glVertex2d(24., 0);
+	glVertex2d(24., 32);
+
+	glVertex2d(23., 0);
+	glVertex2d(23., 32);
+
+	glVertex2d(22., 0);
+	glVertex2d(22., 32);
+
+	glVertex2d(21., 0);
+	glVertex2d(21., 32);
+
+	glVertex2d(20., 0);
+	glVertex2d(20., 32);
+
+	glVertex2d(19., 0);
+	glVertex2d(19., 32);
+
+	glVertex2d(18., 0);
+	glVertex2d(18., 32);
+
+	glVertex2d(17., 0);
+	glVertex2d(17., 32);
+
+	glVertex2d(16., 0);
+	glVertex2d(16., 32);
+
+	glVertex2d(15., 0);
+	glVertex2d(15., 32);
+
+	glVertex2d(14., 0);
+	glVertex2d(14., 32);
+
+	glVertex2d(13., 0);
+	glVertex2d(13., 32);
+
+	glVertex2d(12., 0);
+	glVertex2d(12., 32);
+
+	glVertex2d(11., 0);
+	glVertex2d(11., 32);
+
+	glVertex2d(10., 0);
+	glVertex2d(10., 32);
+
+	glVertex2d(9., 0);
+	glVertex2d(9., 32);
+
+	glVertex2d(8., 0);
+	glVertex2d(8., 32);
+
+	glVertex2d(7., 0);
+	glVertex2d(7., 32);
+
+	glVertex2d(6., 0);
+	glVertex2d(6., 32);
+
+	glVertex2d(5., 0);
+	glVertex2d(5., 32);
+
+	glVertex2d(4., 0);
+	glVertex2d(4., 32);
+
+	glVertex2d(3., 0);
+	glVertex2d(3., 32);
+
+	glVertex2d(2., 0);
+	glVertex2d(2., 32);
+
+	glVertex2d(1., 0);
+	glVertex2d(1., 32);
+
+	glVertex2d(0., 0);
+	glVertex2d(0., 32);
+
+
+
+	glVertex2d(0., 31);
+	glVertex2d(28., 31);
+
+	glVertex2d(0., 30);
+	glVertex2d(28., 30);
+
+	glVertex2d(0., 29);
+	glVertex2d(28., 29);
+
+	glVertex2d(0., 28);
+	glVertex2d(28., 28);
+
+	glVertex2d(0., 27);
+	glVertex2d(28., 27);
+
+	glVertex2d(0., 26);
+	glVertex2d(28., 26);
+
+	glVertex2d(0., 25);
+	glVertex2d(28., 25);
+
+	glVertex2d(0., 24);
+	glVertex2d(28., 24);
+
+	glVertex2d(0., 23);
+	glVertex2d(28., 23);
+
+	glVertex2d(0., 22);
+	glVertex2d(28., 22);
+
+	glVertex2d(0., 21);
+	glVertex2d(28., 21);
+
+	glVertex2d(0., 20);
+	glVertex2d(28., 20);
+
+	glVertex2d(0., 19);
+	glVertex2d(28., 19);
+
+	glVertex2d(0., 18);
+	glVertex2d(28., 18);
+
+	glVertex2d(0., 17);
+	glVertex2d(28., 17);
+
+	glVertex2d(0., 16);
+	glVertex2d(28., 16);
+
+	glVertex2d(0., 15);
+	glVertex2d(28., 15);
+
+	glVertex2d(0., 14);
+	glVertex2d(28., 14);
+
+	glVertex2d(0., 13);
+	glVertex2d(28., 13);
+
+	glVertex2d(0., 12);
+	glVertex2d(28., 12);
+
+	glVertex2d(0., 11);
+	glVertex2d(28., 11);
+
+	glVertex2d(0., 10);
+	glVertex2d(28., 10);
+
+	glVertex2d(0., 9);
+	glVertex2d(28., 9);
+
+	glVertex2d(0., 8);
+	glVertex2d(28., 8);
+
+	glVertex2d(0., 7);
+	glVertex2d(28., 7);
+
+	glVertex2d(0., 6);
+	glVertex2d(28., 6);
+
+	glVertex2d(0., 5);
+	glVertex2d(28., 5);
+
+	glVertex2d(0., 4);
+	glVertex2d(28., 4);
+
+	glVertex2d(0., 3);
+	glVertex2d(28., 3);
+
+	glVertex2d(0., 2);
+	glVertex2d(28., 2);
+
+	glVertex2d(0., 1);
+	glVertex2d(28., 1);
+	glEnd();
+}
+
+void Draw_GameOver_Window() {
+	//Затемнение экрана
+	glColor3ub(0, 0, 0);
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0, 0);
+	glVertex2d(0, 32);
+	glVertex2d(28, 0);
+
+	glVertex2d(28, 32);
+	glVertex2d(28, 0);
+	glVertex2d(0, 32);
+	glEnd();
+
+	//Рамка для сообщения 
+	glColor3ub(0, 0, 255);
+	glLineWidth(7);
+	glBegin(GL_LINES);
+	glVertex2d(8, 13);
+	glVertex2d(20, 13);
+
+	glVertex2d(20, 13);
+	glVertex2d(20, 19);
+
+	glVertex2d(20, 19);
+	glVertex2d(8, 19);
+
+	glVertex2d(8, 19);
+	glVertex2d(8, 13);
+	glEnd();
+
+	Draw_Coords();
+}
+void Draw_Win_Window() {
+	//Затемнение экрана 
+	glColor3ub(0, 0, 0);
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0, 0);
+	glVertex2d(0, 32);
+	glVertex2d(28, 0);
+
+	glVertex2d(28, 32);
+	glVertex2d(28, 0);
+	glVertex2d(0, 32);
+	glEnd();
+
+	//Рамка для сообщения 
+	glColor3ub(0, 0, 255);
+	glLineWidth(4);
+	glBegin(GL_LINES);
+	glVertex2d(8, 13);
+	glVertex2d(20, 13);
+
+	glVertex2d(20, 13);
+	glVertex2d(20, 19);
+
+	glVertex2d(20, 19);
+	glVertex2d(8, 19);
+
+	glVertex2d(8, 19);
+	glVertex2d(8, 13);
+	glEnd();
+
+	//Буква I
+	glBegin(GL_LINES);
+	glVertex2i(13, 18);
+	glVertex2i(15, 18);
+
+	glVertex2i(14, 15);
+	glVertex2i(14, 18);
+
+	glVertex2i(13, 15);
+	glVertex2i(15, 15);
+	glEnd();
+
+	//Буква N
+	glBegin(GL_LINES);
+	glVertex2i(16, 18);
+	glVertex2i(16, 15);
+
+	glVertex2i(16, 18);
+	glVertex2i(19, 15);
+
+	glVertex2i(19, 15);
+	glVertex2i(19, 18);
+	glEnd();
+
+	//Буква W
+	glBegin(GL_LINES);
+	glVertex2i(9, 18);
+	glVertex2i(10, 15);
+
+	glVertex2d(10, 15);
+	glVertex2d(10.5, 18);
+
+	glVertex2d(10.5, 18);
+	glVertex2d(11, 15);
+
+	glVertex2d(11, 15);
+	glVertex2d(12, 18);
+	glEnd();
+}
 
 void ReNew_PacMan_Direction() {
 	if (Wanted_direction == "Right" && Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] != 1 && int(PacMan.position.second * 100.) % 100 == 50 && int(PacMan.position.first * 100.) % 100 == 50) {
@@ -871,6 +1157,14 @@ void Draw_Fruct() {
 	}
 }
 void Draw_PacMan() {
+	static int timer = 0;
+	if (int((PacMan.position.first + PacMan.position.second) * 100) % 100 == 0)
+		++timer;
+
+	if (PacMan.direction == "Right" && Map[PacMan.position_in_array.second][PacMan.position_in_array.first + 1] == 1 && timer) --timer;
+	else if (PacMan.direction == "Left" && Map[PacMan.position_in_array.second][PacMan.position_in_array.first - 1] == 1 && timer) --timer;
+	else if (PacMan.direction == "Up" && Map[PacMan.position_in_array.second + 1][PacMan.position_in_array.first] == 1 && timer) --timer;
+	else if (PacMan.direction == "Down" && Map[PacMan.position_in_array.second - 1][PacMan.position_in_array.first] == 1 && timer) --timer;
 	ReNew_PacMan_Position();
 
 	if (Enerjaze_Time == 80) {
@@ -892,6 +1186,7 @@ void Draw_PacMan() {
 		Count_of_Points += 100;
 		Need_Draw_Fruit = false;
 		Fruit_Position = { 0,0 };
+		++Count_Of_Fruits;
 	}
 
 	double ForDraw;
@@ -902,190 +1197,99 @@ void Draw_PacMan() {
 		glVertex2d(PacMan.position.first + 0.7 * cos(ForDraw), PacMan.position.second + 0.7 * sin(ForDraw));
 	}
 	glEnd();
-}
-void Draw_Coords() {
-	glColor3ub(255, 255, 255);
-	glLineWidth(1);
-	glBegin(GL_LINES);
-	glVertex2d(27., 0);
-	glVertex2d(27., 32);
+	glColor3ub(0, 0, 0);
+	if (timer % 4 == 1) {
+		if (PacMan.direction == "Right") {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first + 0.7, PacMan.position.second - 0.35);
+			glVertex2d(PacMan.position.first + 0.7, PacMan.position.second + 0.35);
+			glEnd();
+		}
+		else if (PacMan.direction == "Left") {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first - 0.7, PacMan.position.second - 0.35);
+			glVertex2d(PacMan.position.first - 0.7, PacMan.position.second + 0.35);
+			glEnd();
+		}
+		else if (PacMan.direction == "Up") {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first + 0.35, PacMan.position.second + 0.7);
+			glVertex2d(PacMan.position.first - 0.35, PacMan.position.second + 0.7);
+			glEnd();
+		}
+		else {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first + 0.35, PacMan.position.second - 0.7);
+			glVertex2d(PacMan.position.first - 0.35, PacMan.position.second - 0.7);
+			glEnd();
+		}
+	}
+	else if (timer % 4 == 2) {
+		if (PacMan.direction == "Right") {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first + 0.7, PacMan.position.second - 0.7);
+			glVertex2d(PacMan.position.first + 0.7, PacMan.position.second + 0.7);
+			glEnd();
+		}
+		else if (PacMan.direction == "Left") {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first - 0.7, PacMan.position.second - 0.7);
+			glVertex2d(PacMan.position.first - 0.7, PacMan.position.second + 0.7);
+			glEnd();
+		}
+		else if (PacMan.direction == "Up") {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first + 0.7, PacMan.position.second + 0.7);
+			glVertex2d(PacMan.position.first - 0.7, PacMan.position.second + 0.7);
+			glEnd();
+		}
+		else {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first + 0.7, PacMan.position.second - 0.7);
+			glVertex2d(PacMan.position.first - 0.7, PacMan.position.second - 0.7);
+			glEnd();
+		}
+	}
+	else if (timer % 4 == 3) {
+		if (PacMan.direction == "Right") {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first + 0.7, PacMan.position.second - 0.35);
+			glVertex2d(PacMan.position.first + 0.7, PacMan.position.second + 0.35);
+			glEnd();
+		}
+		else if (PacMan.direction == "Left") {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first - 0.7, PacMan.position.second - 0.35);
+			glVertex2d(PacMan.position.first - 0.7, PacMan.position.second + 0.35);
+			glEnd();
+		}
+		else if (PacMan.direction == "Up") {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first + 0.35, PacMan.position.second + 0.7);
+			glVertex2d(PacMan.position.first - 0.35, PacMan.position.second + 0.7);
+			glEnd();
+		}
+		else {
+			glBegin(GL_TRIANGLES);
+			glVertex2d(PacMan.position.first, PacMan.position.second);
+			glVertex2d(PacMan.position.first + 0.35, PacMan.position.second - 0.7);
+			glVertex2d(PacMan.position.first - 0.35, PacMan.position.second - 0.7);
+			glEnd();
+		}
+	}
 
-	glVertex2d(26., 0);
-	glVertex2d(26., 32);
-
-	glVertex2d(25., 0);
-	glVertex2d(25., 32);
-
-	glVertex2d(24., 0);
-	glVertex2d(24., 32);
-
-	glVertex2d(23., 0);
-	glVertex2d(23., 32);
-
-	glVertex2d(22., 0);
-	glVertex2d(22., 32);
-
-	glVertex2d(21., 0);
-	glVertex2d(21., 32);
-
-	glVertex2d(20., 0);
-	glVertex2d(20., 32);
-
-	glVertex2d(19., 0);
-	glVertex2d(19., 32);
-
-	glVertex2d(18., 0);
-	glVertex2d(18., 32);
-
-	glVertex2d(17., 0);
-	glVertex2d(17., 32);
-
-	glVertex2d(16., 0);
-	glVertex2d(16., 32);
-
-	glVertex2d(15., 0);
-	glVertex2d(15., 32);
-
-	glVertex2d(14., 0);
-	glVertex2d(14., 32);
-
-	glVertex2d(13., 0);
-	glVertex2d(13., 32);
-
-	glVertex2d(12., 0);
-	glVertex2d(12., 32);
-
-	glVertex2d(11., 0);
-	glVertex2d(11., 32);
-
-	glVertex2d(10., 0);
-	glVertex2d(10., 32);
-
-	glVertex2d(9., 0);
-	glVertex2d(9., 32);
-
-	glVertex2d(8., 0);
-	glVertex2d(8., 32);
-
-	glVertex2d(7., 0);
-	glVertex2d(7., 32);
-
-	glVertex2d(6., 0);
-	glVertex2d(6., 32);
-
-	glVertex2d(5., 0);
-	glVertex2d(5., 32);
-
-	glVertex2d(4., 0);
-	glVertex2d(4., 32);
-
-	glVertex2d(3., 0);
-	glVertex2d(3., 32);
-
-	glVertex2d(2., 0);
-	glVertex2d(2., 32);
-
-	glVertex2d(1., 0);
-	glVertex2d(1., 32);
-
-	glVertex2d(0., 0);
-	glVertex2d(0., 32);
-
-
-
-	glVertex2d(0., 31);
-	glVertex2d(28., 31);
-
-	glVertex2d(0., 30);
-	glVertex2d(28., 30);
-
-	glVertex2d(0., 29);
-	glVertex2d(28., 29);
-
-	glVertex2d(0., 28);
-	glVertex2d(28., 28);
-
-	glVertex2d(0., 27);
-	glVertex2d(28., 27);
-
-	glVertex2d(0., 26);
-	glVertex2d(28., 26);
-
-	glVertex2d(0., 25);
-	glVertex2d(28., 25);
-
-	glVertex2d(0., 24);
-	glVertex2d(28., 24);
-
-	glVertex2d(0., 23);
-	glVertex2d(28., 23);
-
-	glVertex2d(0., 22);
-	glVertex2d(28., 22);
-
-	glVertex2d(0., 21);
-	glVertex2d(28., 21);
-
-	glVertex2d(0., 20);
-	glVertex2d(28., 20);
-
-	glVertex2d(0., 19);
-	glVertex2d(28., 19);
-
-	glVertex2d(0., 18);
-	glVertex2d(28., 18);
-
-	glVertex2d(0., 17);
-	glVertex2d(28., 17);
-
-	glVertex2d(0., 16);
-	glVertex2d(28., 16);
-
-	glVertex2d(0., 15);
-	glVertex2d(28., 15);
-
-	glVertex2d(0., 14);
-	glVertex2d(28., 14);
-
-	glVertex2d(0., 13);
-	glVertex2d(28., 13);
-
-	glVertex2d(0., 12);
-	glVertex2d(28., 12);
-
-	glVertex2d(0., 11);
-	glVertex2d(28., 11);
-
-	glVertex2d(0., 10);
-	glVertex2d(28., 10);
-
-	glVertex2d(0., 9);
-	glVertex2d(28., 9);
-
-	glVertex2d(0., 8);
-	glVertex2d(28., 8);
-
-	glVertex2d(0., 7);
-	glVertex2d(28., 7);
-
-	glVertex2d(0., 6);
-	glVertex2d(28., 6);
-
-	glVertex2d(0., 5);
-	glVertex2d(28., 5);
-
-	glVertex2d(0., 4);
-	glVertex2d(28., 4);
-
-	glVertex2d(0., 3);
-	glVertex2d(28., 3);
-
-	glVertex2d(0., 2);
-	glVertex2d(28., 2);
-
-	glVertex2d(0., 1);
-	glVertex2d(28., 1);
-	glEnd();
+	if (timer == 10002) timer = 1;
 }
 void Draw_Cooks() {
 	glColor3ub(255, 100, 0);
@@ -1142,6 +1346,15 @@ void Draw_Red() {
 		glVertex2d(RedGhost.position.first - 0.2 + 0.15 * cos(ForDraw), RedGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
 	}
 	glEnd();
+
+	glLineWidth(2);
+	glBegin(GL_LINES);
+	glVertex2d(RedGhost.position.first - 0.25, RedGhost.position.second - 0.2);
+	glVertex2d(RedGhost.position.first, RedGhost.position.second - 0.1);
+
+	glVertex2d(RedGhost.position.first, RedGhost.position.second - 0.1);
+	glVertex2d(RedGhost.position.first + 0.25, RedGhost.position.second - 0.2);
+	glEnd();
 }
 void Draw_Blue() {
 	if (Count_Of_cookies <= 150 && !BlueGhost.on_hunt) {
@@ -1189,6 +1402,15 @@ void Draw_Blue() {
 		ForDraw = i * acos(-1) / 180;
 		glVertex2d(BlueGhost.position.first - 0.2 + 0.15 * cos(ForDraw), BlueGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
 	}
+	glEnd();
+
+	glLineWidth(2);
+	glBegin(GL_LINES);
+	glVertex2d(BlueGhost.position.first - 0.25, BlueGhost.position.second - 0.1);
+	glVertex2d(BlueGhost.position.first, BlueGhost.position.second - 0.2);
+
+	glVertex2d(BlueGhost.position.first, BlueGhost.position.second - 0.2);
+	glVertex2d(BlueGhost.position.first + 0.25, BlueGhost.position.second - 0.1);
 	glEnd();
 }
 void Draw_Pink() {
@@ -1238,6 +1460,15 @@ void Draw_Pink() {
 		glVertex2d(PinkGhost.position.first - 0.2 + 0.15 * cos(ForDraw), PinkGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
 	}
 	glEnd();
+
+	glLineWidth(2);
+	glBegin(GL_LINES);
+	glVertex2d(PinkGhost.position.first - 0.25, PinkGhost.position.second - 0.2);
+	glVertex2d(PinkGhost.position.first, PinkGhost.position.second - 0.1);
+
+	glVertex2d(PinkGhost.position.first, PinkGhost.position.second - 0.1);
+	glVertex2d(PinkGhost.position.first + 0.25, PinkGhost.position.second - 0.2);
+	glEnd();
 }
 void Draw_Orange() {
 	if (Count_Of_cookies <= 100 && !OrangeGhost.on_hunt) {
@@ -1285,6 +1516,15 @@ void Draw_Orange() {
 		ForDraw = i * acos(-1) / 180;
 		glVertex2d(OrangeGhost.position.first - 0.2 + 0.15 * cos(ForDraw), OrangeGhost.position.second + 0.2 + 0.15 * sin(ForDraw));
 	}
+	glEnd();
+
+	glLineWidth(2);
+	glBegin(GL_LINES);
+	glVertex2d(OrangeGhost.position.first - 0.25, OrangeGhost.position.second - 0.1);
+	glVertex2d(OrangeGhost.position.first, OrangeGhost.position.second - 0.2);
+
+	glVertex2d(OrangeGhost.position.first, OrangeGhost.position.second - 0.2);
+	glVertex2d(OrangeGhost.position.first + 0.25, OrangeGhost.position.second - 0.1);
 	glEnd();
 }
 void Draw_Enerjazer() {
@@ -1336,6 +1576,13 @@ void Draw_HP() {
 			glVertex2d(1.5 + 0.6 * cos(ForDraw), 31.3 + 0.6 * sin(ForDraw));
 		}
 		glEnd();
+
+		glColor3ub(0, 0, 0);
+		glBegin(GL_TRIANGLES);
+		glVertex2d(1.5, 31.3);
+		glVertex2d(1.5 + 0.6, 31.3 - 0.35);
+		glVertex2d(1.5 + 0.6, 31.3 + 0.35);
+		glEnd();
 	}
 	if (Count_Of_HP >= 2) {
 		double ForDraw;
@@ -1345,6 +1592,13 @@ void Draw_HP() {
 			ForDraw = i * acos(-1) / 180;
 			glVertex2d(3.5 + 0.6 * cos(ForDraw), 31.3 + 0.6 * sin(ForDraw));
 		}
+		glEnd();
+
+		glColor3ub(0, 0, 0);
+		glBegin(GL_TRIANGLES);
+		glVertex2d(3.5, 31.3);
+		glVertex2d(3.5 + 0.6, 31.3 - 0.35);
+		glVertex2d(3.5 + 0.6, 31.3 + 0.35);
 		glEnd();
 	}
 	if (Count_Of_HP == 3) {
@@ -1356,9 +1610,67 @@ void Draw_HP() {
 			glVertex2d(5.5 + 0.6 * cos(ForDraw), 31.3 + 0.6 * sin(ForDraw));
 		}
 		glEnd();
+
+		glColor3ub(0, 0, 0);
+		glBegin(GL_TRIANGLES);
+		glVertex2d(5.5, 31.3);
+		glVertex2d(5.5 + 0.6, 31.3 - 0.35);
+		glVertex2d(5.5 + 0.6, 31.3 + 0.35);
+		glEnd();
 	}
 }
+void Draw_Fruits() {
+	if (Count_Of_Fruits >= 1) {
+		glColor3ub(255, 255, 255);
+		glBegin(GL_LINES);
+		glVertex2d(26.5 - 0.3, 31.5 - 0.3);
+		glVertex2d(26.5, 31.5 + 0.3);
 
+		glVertex2d(26.5 + 0.3, 31.5 - 0.3);
+		glVertex2d(26.5, 31.5 + 0.3);
+		glEnd();
+
+		double ForDraw;
+		glColor3ub(255, 0, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; ++i) {
+			ForDraw = i * acos(-1) / 180;
+			glVertex2d(26.5 - 0.3 + 0.3 * cos(ForDraw), 31.5 - 0.3 + 0.3 * sin(ForDraw));
+		}
+		glEnd();
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; ++i) {
+			ForDraw = i * acos(-1) / 180;
+			glVertex2d(26.5 + 0.3 + 0.3 * cos(ForDraw), 31.5 - 0.3 + 0.3 * sin(ForDraw));
+		}
+		glEnd();
+	}
+	if (Count_Of_Fruits == 2) {
+		glColor3ub(255, 255, 255);
+		glBegin(GL_LINES);
+		glVertex2d(24.5 - 0.3, 31.5 - 0.3);
+		glVertex2d(24.5, 31.5 + 0.3);
+
+		glVertex2d(24.5 + 0.3, 31.5 - 0.3);
+		glVertex2d(24.5, 31.5 + 0.3);
+		glEnd();
+
+		double ForDraw;
+		glColor3ub(255, 0, 0);
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; ++i) {
+			ForDraw = i * acos(-1) / 180;
+			glVertex2d(24.5 - 0.3 + 0.3 * cos(ForDraw), 31.5 - 0.3 + 0.3 * sin(ForDraw));
+		}
+		glEnd();
+		glBegin(GL_POLYGON);
+		for (int i = 0; i < 360; ++i) {
+			ForDraw = i * acos(-1) / 180;
+			glVertex2d(24.5 + 0.3 + 0.3 * cos(ForDraw), 31.5 - 0.3 + 0.3 * sin(ForDraw));
+		}
+		glEnd();
+	}
+}
 
 void Display(void) {
 	glMatrixMode(GL_PROJECTION);
@@ -1367,7 +1679,6 @@ void Display(void) {
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	
 	Draw_Whalls();
 	Draw_Fruct();
 	Draw_PacMan();
@@ -1378,7 +1689,16 @@ void Display(void) {
 	Draw_Pink();
 	Draw_Orange();
 	Draw_HP();
+	Draw_Fruits();
 
+	if (Game_Over == true) {
+		Draw_GameOver_Window();
+	}
+	if (Count_Of_cookies == 0) {
+		Game_Over = true;
+		Draw_Win_Window();
+	}
+	
 	//Draw_Coords();
 
 	if (!Game_Over) glutPostRedisplay();
