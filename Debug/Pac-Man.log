@@ -1,3 +1,14 @@
 ﻿  main.cpp
-C:\Users\andre\OneDrive\Рабочий стол\PacMan\main.cpp(1296,9): warning C4101: 'ForDraw': unreferenced local variable
+C:\Users\andre\OneDrive\Рабочий стол\PacMan\main.cpp(1463,9): warning C4101: 'ForDraw': unreferenced local variable
+C:\Users\andre\OneDrive\Рабочий стол\PacMan\main.cpp(621,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\andre\OneDrive\Рабочий стол\PacMan\main.cpp(666,5): message : see reference to function template instantiation 'void ReNew_Ghost_Direction<T>(T &)' being compiled
+          with
+          [
+              T=Red_Ghost
+          ]
+C:\Users\andre\OneDrive\Рабочий стол\PacMan\main.cpp(1476,2): message : see reference to function template instantiation 'void ReNew_Ghost_Position<Red_Ghost>(T &)' being compiled
+          with
+          [
+              T=Red_Ghost
+          ]
   Pac-Man.vcxproj -> C:\Users\andre\OneDrive\Рабочий стол\PacMan\Debug\Pac-Man.exe
